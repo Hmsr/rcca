@@ -2,19 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import SearchBar from './SearchBar';
 import FilterBar from './FilterBar';
-import Container from './Container';
-import Example from './Header';
+import Header from './Header';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-  < Example />
-  {/* <Container> */}
-    <FilterBar />
-{/*     <SearchBar />   */}
-{/*   </Container> */}
+  <Header />
+  <FilterBar />
   </React.StrictMode>
 
 );

@@ -15,14 +15,11 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-
-
 export default function Admin() {
-
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   const [activeOption, setActiveOption] = useState('view_templates');
 
   useEffect(() => {
@@ -34,8 +31,12 @@ export default function Admin() {
           throw new Error(`Error: ${response.status}`);
         }
         const jsonData = await response.json();
-        setData(jsonData);
-        console.log(jsonData);
+        const formattedData = jsonData.map((template) => ({
+          ...template,
+          fields: template.fields.split(', '),
+        }));
+        setData(formattedData);
+        console.log(formattedData);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -58,15 +59,15 @@ export default function Admin() {
           setActiveOption={setActiveOption}
         />
         <div>
-      {/* <h1>{JSON.stringify(data)}</h1>
-      <ul>
-        {data.map(item => (
-          <li key={item.id}>{item.name}</li>
-        ))}
-      </ul> */}
-    </div>
+          {/* <h1>{JSON.stringify(data)}</h1>
+          <ul>
+            {data.map(item => (
+              <li key={item.id}>{item.name}</li>
+            ))}
+          </ul> */}
+        </div>
         <div className="p-5 w-full">
-          {activeOption === 'view_templates' && <ViewTemplates templates={data} />}
+        {activeOption === 'view_templates' && <ViewTemplates templates={data} setTemplates={setData} />}
           {activeOption === 'view_records' && <ViewRecords />}
           {activeOption === 'approve_deny_records' && <ApproveDenyRecords />}
         </div>

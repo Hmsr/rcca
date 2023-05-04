@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../Components/Header';
 import AdminSidebar from '../Components/AdminSidebar';
-import AddEditTemplates from '../Components/AddEditTemplates';
-import ViewEditRecords from '../Components/ViewEditRecords';
+import ViewTemplates from '../Components/ViewTemplates';
+import ViewRecords from '../Components/ViewRecords';
 import ApproveDenyRecords from '../Components/ApproveDenyRecords';
 
 const navigation = [
-  { name: 'Add/Edit Templates', value: 'add_edit_templates', current: true },
-  { name: 'View/Edit Records', value: 'view_edit_records', current: false },
+  { name: 'View Templates', value: 'view_templates', current: true },
+  { name: 'View Records', value: 'view_records', current: false },
   { name: 'Approve/Deny Records', value: 'approve_deny_records', current: false },
 ];
 
@@ -15,8 +15,38 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
+
+
 export default function Admin() {
-  const [activeOption, setActiveOption] = useState('add_edit_templates');
+
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+  const [activeOption, setActiveOption] = useState('view_templates');
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        setLoading(true);
+        const response = await fetch('https://gettemplates1.azurewebsites.net/api/Templates');
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        const jsonData = await response.json();
+        setData(jsonData);
+        console.log(jsonData);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div>
@@ -27,9 +57,17 @@ export default function Admin() {
           activeOption={activeOption}
           setActiveOption={setActiveOption}
         />
+        <div>
+      {/* <h1>{JSON.stringify(data)}</h1>
+      <ul>
+        {data.map(item => (
+          <li key={item.id}>{item.name}</li>
+        ))}
+      </ul> */}
+    </div>
         <div className="p-5 w-full">
-          {activeOption === 'add_edit_templates' && <AddEditTemplates />}
-          {activeOption === 'view_edit_records' && <ViewEditRecords />}
+          {activeOption === 'view_templates' && <ViewTemplates templates={data} />}
+          {activeOption === 'view_records' && <ViewRecords />}
           {activeOption === 'approve_deny_records' && <ApproveDenyRecords />}
         </div>
       </div>

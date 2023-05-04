@@ -1,7 +1,7 @@
 import React from 'react';
 
-const ViewEditRecords = () => {
+const ViewRecords = () => {
   return <div>View/Edit Records Page</div>;
 };
 
-export default ViewEditRecords;
+export default ViewRecords;

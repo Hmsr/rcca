@@ -2,7 +2,6 @@ import { Fragment, useState } from 'react'
 import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
-
 const sortOptions = [
   { name: 'Most Popular', href: '#', current: true },
   { name: 'Best Rating', href: '#', current: false },
@@ -60,7 +59,7 @@ export default function FilterBar() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
 
   return (
-    <div className="bg-white">
+    <div className="bg-white w-full ">
       <div>
         {/* Mobile filter dialog */}
         <Transition.Root show={mobileFiltersOpen} as={Fragment}>
@@ -163,7 +162,7 @@ export default function FilterBar() {
         </Transition.Root>
 
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-baseline justify-between border-b border-gray-200 pb-1 pt-">
+          {/* <div className="flex items-baseline justify-between border-b border-gray-200 pb-1 pt-">
             <h1 className="w-1/10 text-4xl font-bold tracking-tight text-gray-900">RCCA Archive</h1>
             <form class="pb-3 pt-6 w-3/5 bg-white-200">   
                 <label for="default-search" class="mb-2 text-sm font-medium text-white-900 sr-only dark:text-white">Search</label>
@@ -232,14 +231,12 @@ export default function FilterBar() {
                 <FunnelIcon className="h-5 w-5" aria-hidden="true" />
               </button>
             </div>
-          </div>
+          </div> */}
 
-          <section aria-labelledby="products-heading" className="pb-24 pt-6">
-            <h2 id="products-heading" className="sr-only">
+          <section aria-labelledby="products-heading"  className="pb-24 pt-6" >
+            {<h2 id="products-heading" className="sr-only">
               Products
-            </h2>
-
-            <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4 ">
+            </h2> }
               {/* Filters */}
               <form className="hidden lg:block">
                 <h3 className="sr-only">Categories</h3>
@@ -296,8 +293,8 @@ export default function FilterBar() {
               </form>
 
               {/* Product grid */}
-              <div className="lg:col-span-3">{/* Your content */}</div>
-            </div>
+              
+          
           </section>
         </main>
       </div>

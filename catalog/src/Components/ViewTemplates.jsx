@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-
+import {
+  ArrowPathIcon,
+  Bars3Icon,
+  FolderIcon,
+  DocumentTextIcon,
+  CursorArrowRaysIcon,
+  FingerPrintIcon,
+  SquaresPlusIcon,
+  ClipboardDocumentIcon,
+} from '@heroicons/react/24/outline';
 const possibleFields = [
   "Contributor",
   "Coverage",
@@ -134,7 +143,10 @@ export default function ViewTemplates({ templates, setTemplates }) {
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl">Current Templates</h1>
+        <h1 className="text-2xl"></h1>
+        <div className="p-5 flex items-center justify-center">
+  <ClipboardDocumentIcon className="h-20 w-20" aria-hidden="true" />
+</div>
         <button
           className="bg-green-500 text-white px-4 py-2 rounded shadow"
           onClick={() => {
@@ -159,7 +171,7 @@ export default function ViewTemplates({ templates, setTemplates }) {
             </p>
             <div className="mt-2 space-x-2">
             <button
-              className="mt-2 bg-blue-500 text-white px-4 py-2 rounded shadow-2xl"
+              className="mt-2 bg-blue-500 text-white px-4 py-2 rounded shadow"
               onClick={() => handleEditClick(item)}
             >
               Edit

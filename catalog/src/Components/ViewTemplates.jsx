@@ -1,16 +1,23 @@
 import React, { useState } from "react";
 
 const possibleFields = [
-  "contributor",
-  "coverage",
-  "creator",
-  "date",
-  "description",
-  "test",
-  "jordan smells like pancakes",
+  "Contributor",
+  "Coverage",
+  "Creator",
+  "Description",
+  "Format",
+  "Identifier",
+  "Language",
+  "Publisher",
+  "Relation",
+  "Rights",
+  "Source",
+  "Subject",
+  "Title",
+  "Type"
 ];
 
-function ViewTemplates({ templates, setTemplates }) {
+export default function ViewTemplates({ templates, setTemplates }) {
   const [editFormVisible, setEditFormVisible] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
 
@@ -32,35 +39,110 @@ function ViewTemplates({ templates, setTemplates }) {
         throw new Error(`Error: ${response.status}`);
       }
 
-      setTemplates(templates.filter((template) => template.templateID !== templateID));   
+      setTemplates(templates.filter((template) => template.templateID !== templateID));
     } catch (error) {
       console.error("Error deleting template:", error);
     }
   };
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    // Perform API call to update the template
-    // ...
+
+    if (selectedTemplate && selectedTemplate.templateID) {
+      // Perform API call to update the template
+      try {
+        const response = await fetch(
+          `https://gettemplates1.azurewebsites.net/api/Templates/${selectedTemplate.templateID}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(selectedTemplate),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+
+        // Update the template in the templates state
+        setTemplates(
+          templates.map((template) =>
+            template.templateID === selectedTemplate.templateID
+              ? selectedTemplate
+              : template
+          )
+        );
+      } catch (error) {
+        console.error("Error updating template:", error);
+      }
+    } else {
+      // Perform API call to create the new template
+      try {
+        const response = await fetch("https://gettemplates1.azurewebsites.net/api/Templates", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            templateName: selectedTemplate.templateName,
+            // change this to submit an array not string!!!!
+            fields: selectedTemplate.fields.join(", "),
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+
+        const newTemplate = await response.json();
+        // Add the new template to the state
+        setTemplates((prevTemplates) => [...prevTemplates, newTemplate]);
+      } catch (error) {
+        console.error("Error creating template:", error);
+      }
+    }
 
     // Close the form and clear the selected template
     setEditFormVisible(false);
     setSelectedTemplate(null);
   };
 
-  const handleFieldToggle = (field) => {
-    const updatedFields = selectedTemplate.fields.includes(field)
-      ? selectedTemplate.fields.filter((f) => f !== field)
-      : [...selectedTemplate.fields, field];
 
-    setSelectedTemplate({
-      ...selectedTemplate,
-      fields: updatedFields,
-    });
+  const handleFieldToggle = (field) => {
+    if (selectedTemplate === null) {
+      // Initialize a new template object with the provided field
+      setSelectedTemplate({
+        fields: [field],
+        // Add other necessary properties with default values if needed
+      });
+    } else {
+      const updatedFields = selectedTemplate.fields.includes(field)
+        ? selectedTemplate.fields.filter((f) => f !== field)
+        : [...selectedTemplate.fields, field];
+  
+      setSelectedTemplate({
+        ...selectedTemplate,
+        fields: updatedFields,
+      });
+    }
   };
+  
 
   return (
     <div>
-      <h1 className="text-2xl mb-4">Templates</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl">Current Templates</h1>
+        <button
+          className="bg-green-500 text-white px-4 py-2 rounded"
+          onClick={() => {
+            setEditFormVisible(true);
+            setSelectedTemplate(null);
+          }}
+        >
+          Add Template
+        </button>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {templates.map((item) => (
           <div key={item.templateID} className="bg-white shadow-md rounded p-4">
@@ -88,7 +170,7 @@ function ViewTemplates({ templates, setTemplates }) {
           </div>
         ))}
       </div>
-      {editFormVisible && selectedTemplate && (
+      {editFormVisible && (
         <div
           className="fixed inset-0 z-10 flex items-center justify-center p-4 bg-black bg-opacity-50"
           onClick={() => setEditFormVisible(false)}
@@ -97,14 +179,16 @@ function ViewTemplates({ templates, setTemplates }) {
             className="bg-white w-full max-w-md p-8 rounded shadow-lg"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-2xl mb-4">Edit Template</h2>
+            <h2 className="text-2xl mb-4">
+              {selectedTemplate ? "Edit Template" : "Add Template"}
+            </h2>
             <form onSubmit={handleFormSubmit}>
               <label className="block mb-2">
                 Template Name:
                 <input
                   className="block w-full mt-1 p-2 border border-gray-300 rounded"
                   type="text"
-                  value={selectedTemplate.templateName}
+                  value={selectedTemplate ? selectedTemplate.templateName : ""}
                   onChange={(e) =>
                     setSelectedTemplate({
                       ...selectedTemplate,
@@ -124,7 +208,9 @@ function ViewTemplates({ templates, setTemplates }) {
                       <input
                         type="checkbox"
                         className="form-checkbox"
-                        checked={selectedTemplate.fields.includes(field)}
+                        checked={
+                          selectedTemplate && selectedTemplate.fields.includes(field)
+                        }
                         onChange={() => handleFieldToggle(field)}
                       />
                       <span className="ml-2">{field}</span>
@@ -144,13 +230,12 @@ function ViewTemplates({ templates, setTemplates }) {
                 onClick={() => setEditFormVisible(false)}
               >
                 Cancel
-              </button>
+                </button>
             </form>
           </div>
         </div>
       )}
     </div>
   );
-}
-
-export default ViewTemplates;
+  
+                      }

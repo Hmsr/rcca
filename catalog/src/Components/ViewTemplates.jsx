@@ -159,7 +159,7 @@ export default function ViewTemplates({ templates, setTemplates }) {
             </p>
             <div className="mt-2 space-x-2">
             <button
-              className="mt-2 bg-blue-500 text-white px-4 py-2 rounded shadow-2xl"
+              className="mt-2 bg-blue-500 text-white px-4 py-2 rounded shadow"
               onClick={() => handleEditClick(item)}
             >
               Edit

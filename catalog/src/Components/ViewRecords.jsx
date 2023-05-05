@@ -1,22 +1,83 @@
 import React, { useState, useEffect } from 'react';
 
+const RecordWindow = ({ record, onClose, onEdit, onApprove, onDeny }) => {
+  return (
+    <div className="fixed inset-0 z-10 flex items-center justify-center p-4 bg-black bg-opacity-50">
+      <div className="bg-white w-full max-w-md p-8 rounded shadow-lg">
+        <h2 className="text-2xl mb-4">Selected Record</h2>
+        <div className="mb-4">
+          <p className="text-sm font-bold text-gray-700">Document ID:</p>
+          <p className="text-lg font-semibold text-gray-900">{record.documentID}</p>
+        </div>
+        <div className="mb-4">
+          <p className="text-sm font-bold text-gray-700">Template ID:</p>
+          <p className="text-lg font-semibold text-gray-900">{record.templateID}</p>
+        </div>
+        <div className="mb-4">
+          <p className="text-sm font-bold text-gray-700">Waiting Admin Approval:</p>
+          <p className="text-lg font-semibold text-gray-900">{record.waitingAdminApproval.toString()}</p>
+        </div>
+        <div className="mb-4">
+          <p className="text-sm font-bold text-gray-700">Document Reference:</p>
+          <a
+            href={record.documentReference}
+            download
+            className="inline-block bg-blue-500 text-white px-4 py-2 rounded shadow"
+          >
+            Download
+          </a>
+        </div>
+        <div className="mt-2 space-x-2">
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded shadow"
+            onClick={() => onEdit(record)}
+          >
+            Edit
+          </button>
+          <button
+            className="bg-green-500 text-white px-4 py-2 rounded shadow"
+            onClick={() => onApprove(record)}
+          >
+            Approve
+          </button>
+          <button
+            className="bg-red-500 text-white px-4 py-2 rounded shadow"
+            onClick={() => onDeny(record)}
+          >
+            Deny
+          </button>
+          <button
+            className="bg-gray-500 text-white px-4 py-2 rounded shadow"
+            onClick={onClose}
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+
 const ViewRecords = () => {
   const [records, setRecords] = useState([]);
+  const [selectedRecord, setSelectedRecord] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [recordWindowVisible, setRecordWindowVisible] = useState(false);
 
   const handleEditClick = (record) => {
     console.log('Edit:', record);
   };
-  
+
   const handleApproveClick = (record) => {
     console.log('Approve:', record);
   };
-  
+
   const handleDenyClick = (record) => {
     console.log('Deny:', record);
   };
-  
 
   useEffect(() => {
     async function fetchData() {
@@ -42,37 +103,39 @@ const ViewRecords = () => {
 
   return (
     <div>
-      <h1 className="text-2xl mb-4">View/Edit Records</h1>
+      <h1 className="text-2xl mb-4">View Records</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {records.map((record) => (
           <div key={record.documentID} className="bg-white shadow-md rounded p-4">
             <p className="text-sm font-bold text-gray-700">Document ID: {record.documentID}</p>
             <p className="text-sm font-bold text-gray-700">Template ID: {record.templateID}</p>
-            <p className="text-lg font-semibold text-gray-900">Document Reference: {record.documentReference}</p>
             <p className="text-sm font-medium text-gray-600">Waiting Admin Approval: {record.waitingAdminApproval.toString()}</p>
-            <button
-  className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
-  onClick={() => handleEditClick(record)}
->
-  Edit
-</button>
-<button
-  className="mt-2 bg-green-500 text-white px-4 py-2 rounded"
-  onClick={() => handleApproveClick(record)}
->
-  Approve
-</button>
-<button
-  className="mt-2 bg-red-500 text-white px-4 py-2 rounded"
-  onClick={() => handleDenyClick(record)}
->
-  Deny
-</button>
-</div>
-        ))}
+        <button
+          className="mt-2 bg-blue-500 text-white px-4 py-2 rounded shadow"
+          onClick={() => {
+            setSelectedRecord(record);
+            setRecordWindowVisible(true);
+          }}
+        >
+          View
+        </button>
       </div>
-    </div>
-  );
+    ))}
+  </div>
+  {recordWindowVisible && (
+    <RecordWindow
+      record={selectedRecord}
+      onClose={() => {
+        setSelectedRecord(null);
+        setRecordWindowVisible(false);
+      }}
+      onEdit={handleEditClick}
+      onApprove={handleApproveClick}
+      onDeny={handleDenyClick}
+    />
+  )}
+</div>
+);
 };
 
 export default ViewRecords;

@@ -61,6 +61,9 @@ export default function FilterBar() {
   function handleUploadButtonClick() {
     setShowUploadPopup(true);
   }
+  function handleClosePopup() {
+    setShowUploadPopup(false);
+  }
   return (
     <div className="bg-white w-full ">
       <div>
@@ -168,10 +171,10 @@ export default function FilterBar() {
               {/* Filters */}
               <form className="hidden lg:block">
               <h3 className="sr-only">Categories</h3>
-             <button className="block px-2 py-3" onClick={handleUploadButtonClick}>
+             <button type= "button" className="block px-2 py-3" onClick={handleUploadButtonClick}>
                             Upload a record
                       </button>
-                      {showUploadPopup && <UploadPopup />}
+                      {showUploadPopup && <UploadPopup onClose={handleClosePopup}/>}
   
 
                 {filters.map((section) => (

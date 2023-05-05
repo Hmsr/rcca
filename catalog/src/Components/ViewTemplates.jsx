@@ -32,7 +32,7 @@ function ViewTemplates({ templates, setTemplates }) {
         throw new Error(`Error: ${response.status}`);
       }
 
-      // setTemplates(templates.filter((template) => template.templateID !== templateID));   reinstate after API works?
+      setTemplates(templates.filter((template) => template.templateID !== templateID));   
     } catch (error) {
       console.error("Error deleting template:", error);
     }

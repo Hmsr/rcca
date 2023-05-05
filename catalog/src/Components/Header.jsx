@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Fragment, useState } from 'react'
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import {
@@ -112,7 +114,8 @@ export default function Header() {
           </a>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+        
+          <a href="/admin" className="text-sm font-semibold leading-6 text-gray-900">
             Admin Log in <span aria-hidden="true">&rarr;</span>
           </a>
         </div>

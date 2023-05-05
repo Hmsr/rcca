@@ -14,7 +14,9 @@ const possibleFields = [
   "Source",
   "Subject",
   "Title",
-  "Type"
+  "Type",
+  "Email",
+  "Name"
 ];
 
 export default function ViewTemplates({ templates, setTemplates }) {
@@ -134,7 +136,7 @@ export default function ViewTemplates({ templates, setTemplates }) {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl">Current Templates</h1>
         <button
-          className="bg-green-500 text-white px-4 py-2 rounded"
+          className="bg-green-500 text-white px-4 py-2 rounded shadow"
           onClick={() => {
             setEditFormVisible(true);
             setSelectedTemplate(null);
@@ -155,18 +157,20 @@ export default function ViewTemplates({ templates, setTemplates }) {
             <p className="text-sm font-medium text-gray-600">
               Fields: {item.fields.join(", ")}
             </p>
+            <div className="mt-2 space-x-2">
             <button
-              className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+              className="mt-2 bg-blue-500 text-white px-4 py-2 rounded shadow-2xl"
               onClick={() => handleEditClick(item)}
             >
               Edit
             </button>
             <button
-              className="mt-2 bg-red-500 text-white px-4 py-2 rounded"
+              className="mt-2 bg-red-500 text-white px-4 py-2 rounded shadow"
               onClick={() => handleDeleteClick(item.templateID)}
             >
               Delete
             </button>
+            </div>
           </div>
         ))}
       </div>
@@ -218,19 +222,21 @@ export default function ViewTemplates({ templates, setTemplates }) {
                   ))}
                 </div>
               </div>
+              <div className="mt-2 space-x-2">
               <button
-                className="bg-green-500 text-white px-4 py-2 rounded mr-4"
+                className="bg-green-500 text-white px-4 py-2 rounded mr-4 shadow"
                 type="submit"
               >
                 Save
               </button>
               <button
-                className="bg-red-500 text-white px-4 py-2 rounded"
+                className="bg-red-500 text-white px-4 py-2 rounded shadow"
                 type="button"
                 onClick={() => setEditFormVisible(false)}
               >
                 Cancel
                 </button>
+                </div>
             </form>
           </div>
         </div>

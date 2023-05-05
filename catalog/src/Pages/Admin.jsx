@@ -3,12 +3,12 @@ import Header from '../Components/Header';
 import AdminSidebar from '../Components/AdminSidebar';
 import ViewTemplates from '../Components/ViewTemplates';
 import ViewRecords from '../Components/ViewRecords';
-import ApproveDenyRecords from '../Components/ApproveDenyRecords';
+
 
 const navigation = [
   { name: 'View Templates', value: 'view_templates', current: true },
   { name: 'View Records', value: 'view_records', current: false },
-  { name: 'Approve/Deny Records', value: 'approve_deny_records', current: false },
+  
 ];
 
 function classNames(...classes) {
@@ -69,7 +69,7 @@ export default function Admin() {
         <div className="p-5 w-full">
         {activeOption === 'view_templates' && <ViewTemplates templates={data} setTemplates={setData} />}
           {activeOption === 'view_records' && <ViewRecords />}
-          {activeOption === 'approve_deny_records' && <ApproveDenyRecords />}
+          
         </div>
       </div>
     </div>

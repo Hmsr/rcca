@@ -18,7 +18,9 @@ const AdminSidebar = ({ options, activeOption, setActiveOption }) => {
           </li>
         ))}
       </ul>
+      <div style={{ marginTop: '50px', height: '400px' }}>
       <CarCar />
+      </div>
     </div>
   );
 };

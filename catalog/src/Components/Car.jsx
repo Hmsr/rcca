@@ -14,7 +14,7 @@ function CarCar() {
   })
 
   return (
-    <mesh scale={[0.1, 0.1, 0.1]}  rotation={[rotation, rotation, 0]}>
+    <mesh scale={[0.06, 0.06, 0.06]}  rotation={[rotation, rotation, 0]}>
       <bufferGeometry attach="geometry" {...geometry} />
       <meshStandardMaterial color="royalblue" />
     </mesh>

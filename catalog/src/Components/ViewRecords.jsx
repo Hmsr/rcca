@@ -1,10 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import {
+  ArrowPathIcon,
+  Bars3Icon,
+  FolderIcon,
+  DocumentTextIcon,
+  CursorArrowRaysIcon,
+  FingerPrintIcon,
+  SquaresPlusIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline'
+
 
 const RecordWindow = ({ record, onClose, onEdit, onApprove, onDeny }) => {
   return (
     <div className="fixed inset-0 z-10 flex items-center justify-center p-4 bg-black bg-opacity-50">
       <div className="bg-white w-full max-w-md p-8 rounded shadow-lg">
-        <h2 className="text-2xl mb-4">Selected Record</h2>
+      <div className="p-5 flex justify-center">
+  <DocumentTextIcon className="h-20 w-20" aria-hidden="true" />
+</div>
+
         <div className="mb-4">
           <p className="text-sm font-bold text-gray-700">Document ID:</p>
           <p className="text-lg font-semibold text-gray-900">{record.documentID}</p>
@@ -103,10 +117,14 @@ const ViewRecords = () => {
 
   return (
     <div>
-      <h1 className="text-2xl mb-4">View Records</h1>
+      <div className="p-5 flex items-center justify-center">
+  <FolderIcon className="h-20 w-20" aria-hidden="true" />
+</div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {records.map((record) => (
           <div key={record.documentID} className="bg-white shadow-md rounded p-4">
+            {/* <DocumentTextIcon className="h-5 w-5" aria-hidden="true" /> */}
             <p className="text-sm font-bold text-gray-700">Document ID: {record.documentID}</p>
             <p className="text-sm font-bold text-gray-700">Template ID: {record.templateID}</p>
             <p className="text-sm font-medium text-gray-600">Waiting Admin Approval: {record.waitingAdminApproval.toString()}</p>

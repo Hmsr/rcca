@@ -3,7 +3,9 @@ import Header from '../Components/Header';
 import AdminSidebar from '../Components/AdminSidebar';
 import ViewTemplates from '../Components/ViewTemplates';
 import ViewRecords from '../Components/ViewRecords';
-
+import CarCar from '../Components/Car';
+import { useLoader } from '@react-three/fiber'
+import { BoxGeometry } from 'three'
 
 const navigation = [
   { name: 'View Templates', value: 'view_templates', current: true },
@@ -14,6 +16,8 @@ const navigation = [
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
+
+
 
 export default function Admin() {
   const [data, setData] = useState([]);
@@ -52,11 +56,15 @@ export default function Admin() {
   return (
     <div>
       <Header />
+      <div style={{ position: 'relative' }}>
+      
+      </div>
       <div className="flex">
         <AdminSidebar
           options={navigation}
           activeOption={activeOption}
           setActiveOption={setActiveOption}
+          
         />
         <div>
           {/* <h1>{JSON.stringify(data)}</h1>
@@ -71,6 +79,7 @@ export default function Admin() {
           {activeOption === 'view_records' && <ViewRecords />}
           
         </div>
+        
       </div>
     </div>
   );

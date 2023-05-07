@@ -1,5 +1,15 @@
 import React from 'react';
 import CarCar from '../Components/Car';
+import {
+  ArrowPathIcon,
+  Bars3Icon,
+  FolderIcon,
+  DocumentTextIcon,
+  CursorArrowRaysIcon,
+  FingerPrintIcon,
+  SquaresPlusIcon,
+  ClipboardDocumentIcon,
+} from '@heroicons/react/24/outline';
 const AdminSidebar = ({ options, activeOption, setActiveOption }) => {
   return (
     <div className="h-screen w-64 bg-gray-800 text-white p-5">
@@ -14,7 +24,11 @@ const AdminSidebar = ({ options, activeOption, setActiveOption }) => {
             }`}
             onClick={() => setActiveOption(option.value)}
           >
+            <div className="flex items-center">
+            {/* <FolderIcon className="h-5 w-5 " aria-hidden="true" /> */}
             {option.name}
+            
+            </div>
           </li>
         ))}
       </ul>

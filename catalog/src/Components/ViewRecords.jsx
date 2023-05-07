@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   ArrowPathIcon,
   Bars3Icon,
@@ -8,31 +8,45 @@ import {
   FingerPrintIcon,
   SquaresPlusIcon,
   XMarkIcon,
-} from '@heroicons/react/24/outline'
-
+} from "@heroicons/react/24/outline";
 
 const RecordWindow = ({ record, onClose, onEdit, onApprove, onDeny }) => {
   return (
     <div className="fixed inset-0 z-10 flex items-center justify-center p-4 bg-black bg-opacity-50">
       <div className="bg-white w-full max-w-md p-8 rounded shadow-lg">
-      <div className="p-5 flex justify-center">
-  <DocumentTextIcon className="h-20 w-20" aria-hidden="true" />
-</div>
+        <div className="p-5 flex justify-center"></div>
 
         <div className="mb-4">
           <p className="text-sm font-bold text-gray-700">Document ID:</p>
-          <p className="text-lg font-semibold text-gray-900">{record.documentID}</p>
+          <p className="text-lg font-semibold text-gray-900">
+            {record.documentID}
+          </p>
         </div>
         <div className="mb-4">
           <p className="text-sm font-bold text-gray-700">Template ID:</p>
-          <p className="text-lg font-semibold text-gray-900">{record.templateID}</p>
+          <p className="text-lg font-semibold text-gray-900">
+            {record.templateID}
+          </p>
         </div>
         <div className="mb-4">
-          <p className="text-sm font-bold text-gray-700">Waiting Admin Approval:</p>
-          <p className="text-lg font-semibold text-gray-900">{record.waitingAdminApproval.toString()}</p>
+          <p className="text-sm font-bold text-gray-700">
+            Waiting Admin Approval:
+          </p>
+          <p className="text-lg font-semibold text-gray-900">
+            {record.waitingAdminApproval.toString()}
+          </p>
         </div>
         <div className="mb-4">
           <p className="text-sm font-bold text-gray-700">Document Reference:</p>
+          {/* <a
+            href={record.documentReference}
+            download
+            className="inline-block bg-blue-500 text-white px-4 py-2 rounded shadow"
+          >
+            Download
+          </a> */}
+        </div>
+        <div className="mt-2 space-x-2">
           <a
             href={record.documentReference}
             download
@@ -40,14 +54,12 @@ const RecordWindow = ({ record, onClose, onEdit, onApprove, onDeny }) => {
           >
             Download
           </a>
-        </div>
-        <div className="mt-2 space-x-2">
-          <button
+          {/* <button
             className="bg-blue-500 text-white px-4 py-2 rounded shadow"
             onClick={() => onEdit(record)}
           >
             Edit
-          </button>
+          </button> */}
           <button
             className="bg-green-500 text-white px-4 py-2 rounded shadow"
             onClick={() => onApprove(record)}
@@ -72,8 +84,6 @@ const RecordWindow = ({ record, onClose, onEdit, onApprove, onDeny }) => {
   );
 };
 
-
-
 const ViewRecords = () => {
   const [records, setRecords] = useState([]);
   const [selectedRecord, setSelectedRecord] = useState(null);
@@ -82,22 +92,34 @@ const ViewRecords = () => {
   const [recordWindowVisible, setRecordWindowVisible] = useState(false);
 
   const handleEditClick = (record) => {
-    console.log('Edit:', record);
+    console.log("Edit:", record);
   };
 
-  const handleApproveClick = (record) => {
-    console.log('Approve:', record);
+  const handleApproveClick = async (record) => {
+    const response = await fetch(
+      `https://getdocument.azurewebsites.net/api/Documents/approveDocument/${record.documentID}`,
+      {
+        method: "POST",
+      }
+    );
   };
 
-  const handleDenyClick = (record) => {
-    console.log('Deny:', record);
+  const handleDenyClick = async (record) => {
+    const response = await fetch(
+      `https://getdocument.azurewebsites.net/api/Documents/rejectDocument/${record.documentID}`,
+      {
+        method: "POST",
+      }
+    );
   };
 
   useEffect(() => {
     async function fetchData() {
       try {
         setLoading(true);
-        const response = await fetch('https://getdocument.azurewebsites.net/api/Documents/ListOfDocumentsWaiting');
+        const response = await fetch(
+          "https://getdocument.azurewebsites.net/api/Documents/ListOfDocumentsWaiting"
+        );
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
@@ -117,43 +139,50 @@ const ViewRecords = () => {
 
   return (
     <div>
-      <div className="p-5 flex items-center justify-center">
-  <FolderIcon className="h-20 w-20" aria-hidden="true" />
-</div>
+      <div className="p-5 flex items-center justify-center"></div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {records.map((record) => (
-          <div key={record.documentID} className="bg-white shadow-md rounded p-4">
+          <div
+            key={record.documentID}
+            className="bg-white shadow-md rounded p-4"
+          >
             {/* <DocumentTextIcon className="h-5 w-5" aria-hidden="true" /> */}
-            <p className="text-sm font-bold text-gray-700">Document ID: {record.documentID}</p>
-            <p className="text-sm font-bold text-gray-700">Template ID: {record.templateID}</p>
-            <p className="text-sm font-medium text-gray-600">Waiting Admin Approval: {record.waitingAdminApproval.toString()}</p>
-        <button
-          className="mt-2 bg-blue-500 text-white px-4 py-2 rounded shadow"
-          onClick={() => {
-            setSelectedRecord(record);
-            setRecordWindowVisible(true);
-          }}
-        >
-          View
-        </button>
+            <p className="text-sm font-bold text-gray-700">
+              Document ID: {record.documentID}
+            </p>
+            <p className="text-sm font-bold text-gray-700">
+              Template ID: {record.templateID}
+            </p>
+            <p className="text-sm font-medium text-gray-600">
+              Waiting Admin Approval: {record.waitingAdminApproval.toString()}
+            </p>
+            <button
+              className="mt-2 bg-blue-500 text-white px-4 py-2 rounded shadow"
+              onClick={() => {
+                setSelectedRecord(record);
+                setRecordWindowVisible(true);
+              }}
+            >
+              View
+            </button>
+          </div>
+        ))}
       </div>
-    ))}
-  </div>
-  {recordWindowVisible && (
-    <RecordWindow
-      record={selectedRecord}
-      onClose={() => {
-        setSelectedRecord(null);
-        setRecordWindowVisible(false);
-      }}
-      onEdit={handleEditClick}
-      onApprove={handleApproveClick}
-      onDeny={handleDenyClick}
-    />
-  )}
-</div>
-);
+      {recordWindowVisible && (
+        <RecordWindow
+          record={selectedRecord}
+          onClose={() => {
+            setSelectedRecord(null);
+            setRecordWindowVisible(false);
+          }}
+          onEdit={handleEditClick}
+          onApprove={handleApproveClick}
+          onDeny={handleDenyClick}
+        />
+      )}
+    </div>
+  );
 };
 
 export default ViewRecords;

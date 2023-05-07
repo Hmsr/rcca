@@ -8,7 +8,7 @@ import {
   FingerPrintIcon,
   SquaresPlusIcon,
   ClipboardDocumentIcon,
-} from '@heroicons/react/24/outline';
+} from "@heroicons/react/24/outline";
 const possibleFields = [
   "Contributor",
   "Coverage",
@@ -25,7 +25,7 @@ const possibleFields = [
   "Title",
   "Type",
   "Email",
-  "Name"
+  "Name",
 ];
 
 export default function ViewTemplates({ templates, setTemplates }) {
@@ -50,7 +50,9 @@ export default function ViewTemplates({ templates, setTemplates }) {
         throw new Error(`Error: ${response.status}`);
       }
 
-      setTemplates(templates.filter((template) => template.templateID !== templateID));
+      setTemplates(
+        templates.filter((template) => template.templateID !== templateID)
+      );
     } catch (error) {
       console.error("Error deleting template:", error);
     }
@@ -90,17 +92,20 @@ export default function ViewTemplates({ templates, setTemplates }) {
     } else {
       // Perform API call to create the new template
       try {
-        const response = await fetch("https://gettemplates1.azurewebsites.net/api/Templates", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            templateName: selectedTemplate.templateName,
-            // change this to submit an array not string!!!!
-            fields: selectedTemplate.fields.join(", "),
-          }),
-        });
+        const response = await fetch(
+          "https://gettemplates1.azurewebsites.net/api/Templates",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              templateName: selectedTemplate.templateName,
+              // change this to submit an array not string!!!!
+              fields: selectedTemplate.fields.join(", "),
+            }),
+          }
+        );
 
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
@@ -119,7 +124,6 @@ export default function ViewTemplates({ templates, setTemplates }) {
     setSelectedTemplate(null);
   };
 
-
   const handleFieldToggle = (field) => {
     if (selectedTemplate === null) {
       // Initialize a new template object with the provided field
@@ -131,22 +135,19 @@ export default function ViewTemplates({ templates, setTemplates }) {
       const updatedFields = selectedTemplate.fields.includes(field)
         ? selectedTemplate.fields.filter((f) => f !== field)
         : [...selectedTemplate.fields, field];
-  
+
       setSelectedTemplate({
         ...selectedTemplate,
         fields: updatedFields,
       });
     }
   };
-  
 
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl"></h1>
-        <div className="p-5 flex items-center justify-center">
-  <ClipboardDocumentIcon className="h-20 w-20" aria-hidden="true" />
-</div>
+        <div className="p-5 flex items-center justify-center"></div>
         <button
           className="bg-green-500 text-white px-4 py-2 rounded shadow"
           onClick={() => {
@@ -170,18 +171,18 @@ export default function ViewTemplates({ templates, setTemplates }) {
               Fields: {item.fields.join(", ")}
             </p>
             <div className="mt-2 space-x-2">
-            <button
-              className="mt-2 bg-blue-500 text-white px-4 py-2 rounded shadow"
-              onClick={() => handleEditClick(item)}
-            >
-              Edit
-            </button>
-            <button
-              className="mt-2 bg-red-500 text-white px-4 py-2 rounded shadow"
-              onClick={() => handleDeleteClick(item.templateID)}
-            >
-              Delete
-            </button>
+              <button
+                className="mt-2 bg-blue-500 text-white px-4 py-2 rounded shadow"
+                onClick={() => handleEditClick(item)}
+              >
+                Edit
+              </button>
+              <button
+                className="mt-2 bg-red-500 text-white px-4 py-2 rounded shadow"
+                onClick={() => handleDeleteClick(item.templateID)}
+              >
+                Delete
+              </button>
             </div>
           </div>
         ))}
@@ -225,7 +226,8 @@ export default function ViewTemplates({ templates, setTemplates }) {
                         type="checkbox"
                         className="form-checkbox"
                         checked={
-                          selectedTemplate && selectedTemplate.fields.includes(field)
+                          selectedTemplate &&
+                          selectedTemplate.fields.includes(field)
                         }
                         onChange={() => handleFieldToggle(field)}
                       />
@@ -235,25 +237,24 @@ export default function ViewTemplates({ templates, setTemplates }) {
                 </div>
               </div>
               <div className="mt-2 space-x-2">
-              <button
-                className="bg-green-500 text-white px-4 py-2 rounded mr-4 shadow"
-                type="submit"
-              >
-                Save
-              </button>
-              <button
-                className="bg-red-500 text-white px-4 py-2 rounded shadow"
-                type="button"
-                onClick={() => setEditFormVisible(false)}
-              >
-                Cancel
+                <button
+                  className="bg-green-500 text-white px-4 py-2 rounded mr-4 shadow"
+                  type="submit"
+                >
+                  Save
                 </button>
-                </div>
+                <button
+                  className="bg-red-500 text-white px-4 py-2 rounded shadow"
+                  type="button"
+                  onClick={() => setEditFormVisible(false)}
+                >
+                  Cancel
+                </button>
+              </div>
             </form>
           </div>
         </div>
       )}
     </div>
   );
-  
-                      }
+}

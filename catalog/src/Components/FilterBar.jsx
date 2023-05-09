@@ -5,11 +5,8 @@ import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from
 import React from 'react';
 import UploadPopup from './UploadPopup';
 const sortOptions = [
-  { name: 'Most Popular', href: '#', current: true },
-  { name: 'Best Rating', href: '#', current: false },
-  { name: 'Newest', href: '#', current: false },
-  { name: 'Price: Low to High', href: '#', current: false },
-  { name: 'Price: High to Low', href: '#', current: false },
+  { name: 'Most searched', href: '#', current: true },
+  { name: 'Most recent uploaded', href: '#', current: false },
 ]
 
 const filters = [

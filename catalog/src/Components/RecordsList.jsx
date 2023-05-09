@@ -22,40 +22,18 @@ const records = [
       imageUrl: 'https://www.shareicon.net/download/2015/10/23/660695_txt.svg',
 
     },
-    /* {
-      name: 'Lindsay Walton',
-      email: 'lindsay.walton@example.com',
-      role: 'Front-end Developer',
-      imageUrl:
-        'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      lastSeen: '3h ago',
-      lastSeenDateTime: '2023-01-23T13:23Z',
-    },
-    {
-      name: 'Courtney Henry',
-      email: 'courtney.henry@example.com',
-      role: 'Designer',
-      imageUrl:
-        'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      lastSeen: '3h ago',
-      lastSeenDateTime: '2023-01-23T13:23Z',
-    },
-    {
-      name: 'Tom Cook',
-      email: 'tom.cook@example.com',
-      role: 'Director of Product',
-      imageUrl:
-        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      lastSeen: null,
-    }, */
   ]
   
-  export default function RecordsList() {
+export default function RecordsList() {
+  function handleClick(e) {
+    e.preventDefault();
+    console.log('The link was clicked.');
+  }
     return (
     
-      <ul role="list" className="divide-y divide-gray-100 w-full">
+      <ul role="list" className="divide-y divide-gray-100 w-full" >
         {records.map((record) => (
-          <li key={record.tag} className="flex justify-between gap-x-6 py-5">
+          <li key={record.tag} className="flex justify-between gap-x-6 py-5 hover:bg-gray-200 cursor-pointer" onClick={handleClick}>
             <div className="flex gap-x-4">
               <img className="h-12 w-12 flex-none rounded-full bg-gray-50" src={record.imageUrl} alt="" />
               <div className="min-w-0 flex-auto">

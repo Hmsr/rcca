@@ -30,10 +30,10 @@ const records = [
 export default function RecordsList() {
   const [showRecord, setShowRecord] = useState(false);
   const [records, setRecords] = useState([]);
-  const [selectedRecord, setSelectedRecord] = useState(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [recordWindowVisible, setRecordWindowVisible] = useState(false);
+
   function handleRecordClose() {
     setShowRecord(false);
   }

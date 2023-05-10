@@ -1,9 +1,11 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 function UploadPopup({onClose}) {
     const [showSecondPopup, setShowSecondPopup] = useState(false);
-    const [isSubmitted, setIsSubmitted] = useState(false);
-
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [templates, setTemplates] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     function handleSecondPopupButtonClick() {
         setShowSecondPopup(true);
 
@@ -19,13 +21,46 @@ function UploadPopup({onClose}) {
         setIsSubmitted(true);
     };
     
+    useEffect(() => {
+      async function fetchData() {
+        try {
+          setLoading(true);
+          const response = await fetch(
+            "https://gettemplates1.azurewebsites.net/api/Templates/"
+          );
+          if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+          }
+          const data = await response.json();
+          setTemplates(data);
+        } catch (error) {
+          setError(error.message);
+        } finally {
+          setLoading(false);
+        }
+      }
+      fetchData();
+    }, []);
+  
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-50">
         <div className="bg-white rounded-lg p-6">
           <h2 className="text-xl font-bold mb-4">Choose a Template:</h2>
             <div className="mb-4">
             <ul class="my-4 space-y-3">
-                    <li>
+
+
+            {templates.map((item) => (
+            <li key={item.templateID} >
+            <a class="flex items-center p-3 text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white" onClick={handleSecondPopupButtonClick}>
+              <span class="flex-1 ml-3 whitespace-nowrap"> {item.templateName}</span>
+            </a>
+            {showSecondPopup && <SecondPopup onClose={handleSecondPopupClose} />}
+          </li>
+        ))}
+
+
+                  {/*   <li>
                         <a href="#" class="flex items-center p-3 text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white" onClick={handleSecondPopupButtonClick}>
                             <span class="flex-1 ml-3 whitespace-nowrap"> Template A</span>
                         </a>
@@ -51,7 +86,7 @@ function UploadPopup({onClose}) {
                         <a href="#" class="flex items-center p-3 text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
                             <span class="flex-1 ml-3 whitespace-nowrap">Template E</span>
                         </a>
-                    </li>
+                    </li> */}
                 </ul>
             </div>
             <button className="flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={onClose}>Close</button>

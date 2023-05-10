@@ -29,7 +29,11 @@ const records = [
   
 export default function RecordsList() {
   const [showRecord, setShowRecord] = useState(false);
-
+  const [records, setRecords] = useState([]);
+  const [selectedRecord, setSelectedRecord] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [recordWindowVisible, setRecordWindowVisible] = useState(false);
   function handleRecordClose() {
     setShowRecord(false);
   }
@@ -37,11 +41,32 @@ export default function RecordsList() {
   function handleButtonClick() {
     setShowRecord(true);
   }
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        setLoading(true);
+        const response = await fetch(
+          "https://getdocument.azurewebsites.net/api/Documents/ListOfDocumentsWaiting"
+        );
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        const data = await response.json();
+        setRecords(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+    }, []);
+
     return (
     
       <ul role="list" className="divide-y divide-gray-100 w-full" >
         {records.map((record) => (
-          <li key={record.tag} className="flex justify-between gap-x-6 py-5 hover:bg-gray-200 cursor-pointer" onClick={handleButtonClick}>
+/*           <li key={record.tag} className="flex justify-between gap-x-6 py-5 hover:bg-gray-200 cursor-pointer" onClick={handleButtonClick}>
             <div className="flex gap-x-4">
               <img className="h-12 w-12 flex-none rounded-full bg-gray-50" src={record.imageUrl} alt="" />
               <div className="min-w-0 flex-auto">
@@ -51,24 +76,29 @@ export default function RecordsList() {
             </div>
             <div className="hidden sm:flex sm:flex-col sm:items-end">
               <p className="text-sm leading-6 text-gray-900">{record.uploadYear}</p>
-              {record.lastSeen ? (
-                <p className="mt-1 text-xs leading-5 text-gray-500">
-                  Last seen <time dateTime={record.lastSeenDateTime}>{record.lastSeen}</time>
-                </p>
-              ) : (
-                <div className="mt-1 flex items-center gap-x-1.5">
-                  {/* <div className="flex-none rounded-full bg-emerald-500/20 p-1">
-                    <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                  </div>
-                  <p className="text-xs leading-5 text-gray-500">Online</p> */}
-                </div>
-              )}
             </div>
-          </li>
+          </li> */
+          <li
+          key={record.documentID}
+          className="flex justify-between gap-x-6 py-5 hover:bg-gray-200 cursor-pointer" onClick={handleButtonClick}
+        >
+            <div className="flex gap-x-4">
+            <img className="h-12 w-12 flex-none rounded-full bg-gray-50" src='https://www.svgrepo.com/show/56192/pdf.svg' alt="" />
+            <div className="min-w-0 flex-auto">
+                <p className="text-sm font-semibold leading-6 text-gray-900">{record.documentID}</p>
+                <p className="mt-1 truncate text-xs leading-5 text-gray-500">{record.templateID}</p>
+              </div>
+          
+        {/*   <div className="hidden sm:flex sm:flex-col sm:items-end">
+              <p className="text-sm leading-6 text-gray-900">Uploaded 2022</p>
+          </div> */}
+         </div>
+        </li>
         ))}
+        
       <RecordPopup id="defaultModal" showModal={showRecord} onClose={handleRecordClose}>
         <h3 className="text-xl font-semibold">
-          Rover 75 CDTI DIESEL
+          ROVER 75 CDTI DIESEL
         </h3>
         <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
           With less than a month to go before the European Union enacts new

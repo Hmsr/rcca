@@ -4,11 +4,6 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
 import React from 'react';
 import UploadPopup from './UploadPopup';
-const sortOptions = [
-  { name: 'Most searched', href: '#', current: true },
-  { name: 'Most recent uploaded', href: '#', current: false },
-]
-
 const filters = [
   {
     id: 'color',

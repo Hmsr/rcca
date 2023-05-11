@@ -46,7 +46,7 @@ export default function RecordsList() {
       try {
         setLoading(true);
         const response = await fetch(
-          "https://getdocument.azurewebsites.net/api/Documents/ListOfDocumentsWaiting"
+          "https://getdocument.azurewebsites.net/api/Documents/"
         );
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);

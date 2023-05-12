@@ -33,9 +33,13 @@ export default function ViewTemplates({ templates, setTemplates }) {
   const [selectedTemplate, setSelectedTemplate] = useState(null);
 
   const handleEditClick = (template) => {
-    setSelectedTemplate(template);
+    setSelectedTemplate({
+      ...template,
+      fields: template.fields.split(", ")
+    });
     setEditFormVisible(true);
   };
+  
 
   const handleDeleteClick = async (templateID) => {
     try {
@@ -57,32 +61,38 @@ export default function ViewTemplates({ templates, setTemplates }) {
       console.error("Error deleting template:", error);
     }
   };
+
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
-    if (selectedTemplate && selectedTemplate.templateID) {
+  
+    const templateToSave = {
+      ...selectedTemplate,
+      fields: selectedTemplate.fields.join(", ")
+    };
+  
+    if (templateToSave && templateToSave.templateID) {
       // Perform API call to update the template
       try {
         const response = await fetch(
-          `https://gettemplates1.azurewebsites.net/api/Templates/${selectedTemplate.templateID}`,
+          `https://gettemplates1.azurewebsites.net/api/Templates/${templateToSave.templateID}`,
           {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(selectedTemplate),
+            body: JSON.stringify(templateToSave),
           }
         );
-
+  
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
-
+  
         // Update the template in the templates state
         setTemplates(
           templates.map((template) =>
-            template.templateID === selectedTemplate.templateID
-              ? selectedTemplate
+            template.templateID === templateToSave.templateID
+              ? templateToSave
               : template
           )
         );
@@ -99,18 +109,14 @@ export default function ViewTemplates({ templates, setTemplates }) {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-              templateName: selectedTemplate.templateName,
-              // change this to submit an array not string!!!!
-              fields: selectedTemplate.fields.join(", "),
-            }),
+            body: JSON.stringify(templateToSave),
           }
         );
-
+  
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
-
+  
         const newTemplate = await response.json();
         // Add the new template to the state
         setTemplates((prevTemplates) => [...prevTemplates, newTemplate]);
@@ -118,23 +124,22 @@ export default function ViewTemplates({ templates, setTemplates }) {
         console.error("Error creating template:", error);
       }
     }
-
+  
     // Close the form and clear the selected template
     setEditFormVisible(false);
     setSelectedTemplate(null);
   };
+  
 
   const handleFieldToggle = (field) => {
-    if (selectedTemplate === null) {
+    if (!selectedTemplate) {
       // Initialize a new template object with the provided field
-      setSelectedTemplate({
-        fields: [field],
-        // Add other necessary properties with default values if needed
-      });
+      setSelectedTemplate({ fields: [field] });
     } else {
-      const updatedFields = selectedTemplate.fields.includes(field)
-        ? selectedTemplate.fields.filter((f) => f !== field)
-        : [...selectedTemplate.fields, field];
+      const fieldsArray = selectedTemplate.fields;
+      const updatedFields = fieldsArray.includes(field)
+        ? fieldsArray.filter((f) => f !== field)
+        : [...fieldsArray, field];
 
       setSelectedTemplate({
         ...selectedTemplate,
@@ -143,16 +148,17 @@ export default function ViewTemplates({ templates, setTemplates }) {
     }
   };
 
+
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl"></h1>
+        <h1 className="text-2xl">Templates</h1>
         <div className="p-5 flex items-center justify-center"></div>
         <button
           className="bg-green-500 text-white px-4 py-2 rounded shadow"
           onClick={() => {
             setEditFormVisible(true);
-            setSelectedTemplate(null);
+            setSelectedTemplate({ fields: [] });
           }}
         >
           Add Template
@@ -168,8 +174,9 @@ export default function ViewTemplates({ templates, setTemplates }) {
               {item.templateName}
             </p>
             <p className="text-sm font-medium text-gray-600">
-              Fields: {item.fields.join(", ")}
-            </p>
+  Fields: {item.fields}
+</p>
+
             <div className="mt-2 space-x-2">
               <button
                 className="mt-2 bg-blue-500 text-white px-4 py-2 rounded shadow"
@@ -197,7 +204,7 @@ export default function ViewTemplates({ templates, setTemplates }) {
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="text-2xl mb-4">
-              {selectedTemplate ? "Edit Template" : "Add Template"}
+              {selectedTemplate && selectedTemplate.templateID ? "Edit Template" : "Add Template"}
             </h2>
             <form onSubmit={handleFormSubmit}>
               <label className="block mb-2">
@@ -212,6 +219,7 @@ export default function ViewTemplates({ templates, setTemplates }) {
                       templateName: e.target.value,
                     })
                   }
+                  required
                 />
               </label>
               <div className="block mb-4">
@@ -237,7 +245,7 @@ export default function ViewTemplates({ templates, setTemplates }) {
                 </div>
               </div>
               <div className="mt-2 space-x-2">
-                <button
+              <button
                   className="bg-green-500 text-white px-4 py-2 rounded mr-4 shadow"
                   type="submit"
                 >

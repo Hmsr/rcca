@@ -55,13 +55,15 @@ function UploadPopup({onClose}) {
             <li key={template.templateID} >
             <a class="flex items-center p-3 text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white" onClick={() => {
                 handleSecondPopupButtonClick(template);
-                  setShowSecondPopup(true);
+                setShowSecondPopup(template.templateID);
               }}>
                   <span class="flex-1 ml-3 whitespace-nowrap"> {template.templateName}</span>
                   
             </a>
-                {showSecondPopup && <SecondPopup onClose={handleSecondPopupClose} template={template}   />}
-               
+                
+                {showSecondPopup === template.templateID && (
+        <SecondPopup onClose={handleSecondPopupClose} template={template} />
+      )}
           </li>
         ))}
                 </ul>
@@ -73,7 +75,7 @@ function UploadPopup({onClose}) {
     );
   function SecondPopup({template} ) {
         return (
-          <div className="fixed inset-0 z-500  flex items-center justify-center bg-gray-500 bg-opacity-50">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-50">
             <div className="bg-white rounded-lg p-6">
               
               <form onSubmit={handleSubmit}> 

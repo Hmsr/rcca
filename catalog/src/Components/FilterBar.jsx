@@ -23,18 +23,6 @@ const filters = [
       { value: 'picture', label: 'Picture', checked: false },
     ],
   },
-  {
-    id: 'year',
-    name: 'Year',
-    options: [
-      { value: '2l', label: '2L', checked: false },
-      { value: '6l', label: '6L', checked: false },
-      { value: '12l', label: '12L', checked: false },
-      { value: '18l', label: '18L', checked: false },
-      { value: '20l', label: '20L', checked: false },
-      { value: '40l', label: '40L', checked: true },
-    ],
-  },
 ]
 
 function classNames(...classes) {
@@ -43,9 +31,18 @@ function classNames(...classes) {
 
 
 
-export default function FilterBar() {
+export default function FilterBar({ onSearch, onYearRangeSelect }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [showUploadPopup, setShowUploadPopup] = useState(false);
+
+  const [startYear, setStartYear] = useState(1986);
+  const [endYear, setEndYear] = useState(2023);
+
+  const handleYearRangeSelect = () => {
+    onYearRangeSelect(startYear, endYear);
+  };
+
+
   function handleUploadButtonClick() {
     setShowUploadPopup(true);
   }
@@ -207,6 +204,53 @@ export default function FilterBar() {
                     )}
                   </Disclosure>
                 ))}
+              <Disclosure as="div" /* key={section.id} */ className="border-b border-gray-200 py-6">
+                    {({ open }) => (
+                      <>
+                        <h3 className="-my-3 flow-root">
+                          <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
+                            <span className="font-medium text-gray-900">Year</span>
+                            <span className="ml-6 flex items-center">
+                              {open ? (
+                                <MinusIcon className="h-5 w-5" aria-hidden="true" />
+                              ) : (
+                                <PlusIcon className="h-5 w-5" aria-hidden="true" />
+                              )}
+                            </span>
+                          </Disclosure.Button>
+                        </h3>
+                        <Disclosure.Panel className="pt-6">
+                          <div className="space-y-4">
+                            
+                              <div className="flex items-center">
+                              <div className="flex justify-center space-x-2">
+        <input
+          className="border border-gray-400 "
+          type="number"
+          value={startYear}
+          min={1986}
+          max={2023}
+          onChange={(e) => setStartYear(parseInt(e.target.value))}
+        />
+        <span>--</span>
+        <input
+          className="border border-gray-400 "
+          type="number"
+          value={endYear}
+          min={1986}
+          max={2023}
+          onChange={(e) => setEndYear(parseInt(e.target.value))}
+        />
+        <button className="bg-blue-500 text-white px-1 py-1 rounded" 
+        onClick={handleYearRangeSelect}>Apply</button>
+      </div>
+                              </div>
+                            
+                          </div>
+                        </Disclosure.Panel>
+                      </>
+                    )}
+                  </Disclosure>
               </form>
           </section>
         </main>

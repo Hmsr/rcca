@@ -7,29 +7,25 @@ import UploadPopup from './UploadPopup';
 const filters = [
   {
     id: 'color',
-    name: 'Color',
+    name: 'Language',
     options: [
-      { value: 'white', label: 'White', checked: false },
-      { value: 'beige', label: 'Beige', checked: false },
-      { value: 'blue', label: 'Blue', checked: true },
-      { value: 'brown', label: 'Brown', checked: false },
-      { value: 'green', label: 'Green', checked: false },
-      { value: 'purple', label: 'Purple', checked: false },
+      { value: 'english', label: 'English', checked: false },
+      { value: 'chinese', label: 'Chinese', checked: false },
     ],
   },
   {
     id: 'category',
-    name: 'Category',
+    name: 'Format',
     options: [
-      { value: 'new-arrivals', label: 'PDF', checked: false },
-      { value: 'sale', label: 'Text', checked: false },
-      { value: 'travel', label: 'Video', checked: true },
-      { value: 'organization', label: 'Picture', checked: false },
+      { value: 'pdf', label: 'PDF', checked: false },
+      { value: 'text', label: 'Text', checked: false },
+      { value: 'video', label: 'Video', checked: true },
+      { value: 'picture', label: 'Picture', checked: false },
     ],
   },
   {
-    id: 'model',
-    name: 'Model',
+    id: 'year',
+    name: 'Year',
     options: [
       { value: '2l', label: '2L', checked: false },
       { value: '6l', label: '6L', checked: false },
@@ -212,10 +208,6 @@ export default function FilterBar() {
                   </Disclosure>
                 ))}
               </form>
-
-              {/* Product grid */}
-              
-          
           </section>
         </main>
       </div>

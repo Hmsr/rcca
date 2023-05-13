@@ -9,8 +9,6 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Main />} />
-      <Route path="/record" />
-      <Route path="/upload" />
       <Route path="/admin" element={<Admin />} />
     </Routes>
   );

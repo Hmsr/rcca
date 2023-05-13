@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import RecordPopup from './RecordPopup';
 
-const records = [
+/* const records = [
     {
       title: 'Rover 75 CDTI DIESEL',
       tag: '1978',
@@ -25,15 +25,15 @@ const records = [
       imageUrl: 'https://www.shareicon.net/download/2015/10/23/660695_txt.svg',
 
     },
-  ]
+  ] */
   
-export default function RecordsList() {
+export default function RecordsList({ searchValue }) {
   const [showRecord, setShowRecord] = useState(false);
   const [records, setRecords] = useState([]);
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  
   function handleRecordClose() {
     setShowRecord(false);
   }
@@ -62,14 +62,38 @@ export default function RecordsList() {
     }
     fetchData();
     }, []);
+ // Filter records based on search term
+
+  const filteredRecords = records.filter(record => {
+  //const recordString = String(record);
+  // If searchValue is empty, show all records
+  //const documentID = record.documentID && record.documentID.toLowerCase();
+  const recordString = JSON.stringify(record).toLowerCase();
+  if (!searchValue) {
+    return true;
+  } else if (
+    recordString.includes(searchValue.toLowerCase())) {
+    return true;
+  }
+  return false;
+  });
+  if (searchValue && filteredRecords.length === 0) {
+    return(
+    <div class="flex items-center justify-center h-full">
+      <p class="text-3xl text-gray-900 align-content: center">No records found</p>
+    </div>)
+  }
 
     return (
-    
+
       <ul role="list" className="divide-y divide-gray-100 w-full" >
-        {records.map((record) => (
+        {filteredRecords/* .filter((record) =>
+        record.documentID.toLowerCase().includes(searchValue.toLowerCase())
+        ) */
+          .map((record,documentID) => (
           <li
-          key={record.documentID}
-            className="flex justify-between gap-x-6 py-5 hover:bg-gray-200 cursor-pointer" onClick={() => { handleButtonClick(record); setSelectedDocument(record)} }
+          key={documentID}
+            className="flex justify-between gap-x-6 py-5 hover:bg-gray-200 cursor-pointer" onClick={() => { handleButtonClick(); setSelectedDocument(record)} }
         >
             <div className="flex gap-x-4">
             <img className="h-12 w-12 flex-none rounded-full bg-gray-50" src='https://www.svgrepo.com/show/56192/pdf.svg' alt="" />
@@ -77,16 +101,12 @@ export default function RecordsList() {
                 <p className="text-sm font-semibold leading-6 text-gray-900">{record.documentID}</p>
                 <p className="mt-1 truncate text-xs leading-5 text-gray-500">{record.templateID}</p>
               </div>
-          
-        {/*   <div className="hidden sm:flex sm:flex-col sm:items-end">
-              <p className="text-sm leading-6 text-gray-900">Uploaded 2022</p>
-          </div> */}
          </div>
-        </li>
+          </li>
+            
         ))}
         
       <RecordPopup id="defaultModal" showModal={showRecord} onClose={handleRecordClose} record = {selectedDocument}>
-       { console.log(selectedDocument)}
           <h3 className="text-xl font-semibold">
           ROVER 75 CDTI DIESEL
         </h3>
@@ -97,7 +117,7 @@ export default function RecordsList() {
         <div className="mb-4">
           <p className="text-sm font-bold text-gray-700">Document ID:</p>
           <p className="text-lg font-semibold text-gray-900">
- { selectedDocument.documentID}  
+ {/* { record.documentID}   */}
           </p>
         </div>
         <div className="mb-4">

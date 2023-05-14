@@ -22,8 +22,8 @@ const possibleFields = [
   "Rights",
   "Source",
   "Subject",
-  "Title",
   "Type",
+  "Title",
   "Email",
   "Name",
 ];
@@ -134,16 +134,23 @@ export default function ViewTemplates({ templates, setTemplates }) {
   const handleFieldToggle = (field) => {
     if (!selectedTemplate) {
       // Initialize a new template object with the provided field
-      setSelectedTemplate({ fields: [field] });
+      setSelectedTemplate({ fields: "Title,Email,Name," + field });
     } else {
-      const fieldsArray = selectedTemplate.fields || "";
-      const updatedFields = fieldsArray.includes(field)
-        ? fieldsArray.filter((f) => f !== field)
-        : fieldsArray + "," + field;
+      const fieldsArray = selectedTemplate.fields.split(",");
+      let updatedFields = [];
+
+      if (fieldsArray.includes(field)) {
+        updatedFields = fieldsArray.filter((f) => f !== field);
+      } else {
+        updatedFields = [...fieldsArray, field];
+      }
+      // const updatedFields = fieldsArray.includes(field)
+      //   ? fieldsArray.filter((f) => f !== field)
+      //   : field + "," + fieldsArray;
 
       setSelectedTemplate({
         ...selectedTemplate,
-        fields: updatedFields,
+        fields: updatedFields.join(","),
       });
     }
   };
@@ -157,7 +164,7 @@ export default function ViewTemplates({ templates, setTemplates }) {
           className="bg-green-500 text-white px-4 py-2 rounded shadow"
           onClick={() => {
             setEditFormVisible(true);
-            setSelectedTemplate({ fields: [] });
+            setSelectedTemplate({ fields: "Title,Name,Email" });
           }}
         >
           Add Template
@@ -235,8 +242,16 @@ export default function ViewTemplates({ templates, setTemplates }) {
                         type="checkbox"
                         className="form-checkbox"
                         checked={
-                          selectedTemplate &&
-                          selectedTemplate.fields.includes(field)
+                          (selectedTemplate &&
+                            selectedTemplate.fields.includes(field)) ||
+                          field === "Title" ||
+                          field === "Name" ||
+                          field === "Email"
+                        }
+                        disabled={
+                          field === "Title" ||
+                          field === "Name" ||
+                          field === "Email"
                         }
                         onChange={() => handleFieldToggle(field)}
                       />
@@ -255,7 +270,10 @@ export default function ViewTemplates({ templates, setTemplates }) {
                 <button
                   className="bg-red-500 text-white px-4 py-2 rounded shadow"
                   type="button"
-                  onClick={() => setEditFormVisible(false)}
+                  onClick={() => {
+                    setEditFormVisible(false);
+                    setSelectedTemplate(null);
+                  }}
                 >
                   Cancel
                 </button>

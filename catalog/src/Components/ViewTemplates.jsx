@@ -38,6 +38,8 @@ export default function ViewTemplates({ templates, setTemplates }) {
       fields: template.fields,
     });
     setEditFormVisible(true);
+    console.log(template);
+    console.log(template.fields.includes(",Type"));
   };
 
   const handleDeleteClick = async (templateID) => {
@@ -66,7 +68,7 @@ export default function ViewTemplates({ templates, setTemplates }) {
 
     const templateToSave = {
       ...selectedTemplate,
-      fields: selectedTemplate.fields.join(","),
+      // fields: selectedTemplate.fields.join(","),
     };
 
     if (templateToSave && templateToSave.templateID) {
@@ -111,12 +113,12 @@ export default function ViewTemplates({ templates, setTemplates }) {
             body: JSON.stringify(templateToSave),
           }
         );
-
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
-
+        console.log(response);
         const newTemplate = await response.json();
+        console.log(newTemplate);
         // Add the new template to the state
         setTemplates((prevTemplates) => [...prevTemplates, newTemplate]);
       } catch (error) {
@@ -134,10 +136,10 @@ export default function ViewTemplates({ templates, setTemplates }) {
       // Initialize a new template object with the provided field
       setSelectedTemplate({ fields: [field] });
     } else {
-      const fieldsArray = selectedTemplate.fields;
+      const fieldsArray = selectedTemplate.fields || "";
       const updatedFields = fieldsArray.includes(field)
         ? fieldsArray.filter((f) => f !== field)
-        : [...fieldsArray, field];
+        : fieldsArray + "," + field;
 
       setSelectedTemplate({
         ...selectedTemplate,

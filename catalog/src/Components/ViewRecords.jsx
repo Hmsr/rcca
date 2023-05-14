@@ -102,6 +102,10 @@ const ViewRecords = () => {
         method: "POST",
       }
     );
+    setRecords(
+      records.filter((record1) => record1.documentID !== record.documentID)
+    );
+    setRecordWindowVisible(false);
   };
 
   const handleDenyClick = async (record) => {
@@ -111,6 +115,10 @@ const ViewRecords = () => {
         method: "POST",
       }
     );
+    setRecords(
+      records.filter((record1) => record1.documentID !== record.documentID)
+    );
+    setRecordWindowVisible(false);
   };
 
   useEffect(() => {

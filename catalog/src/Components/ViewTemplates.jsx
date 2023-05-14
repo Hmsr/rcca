@@ -35,16 +35,15 @@ export default function ViewTemplates({ templates, setTemplates }) {
   const handleEditClick = (template) => {
     setSelectedTemplate({
       ...template,
-      fields: template.fields.split(", ")
+      fields: template.fields,
     });
     setEditFormVisible(true);
   };
-  
 
   const handleDeleteClick = async (templateID) => {
     try {
       const response = await fetch(
-        `https://gettemplates1.azurewebsites.net/api/Templates/${templateID}`,
+        `https://gettemplates1.azurewebsites.net/api/Templates/deleteTemplate/${templateID}`,
         {
           method: "DELETE",
         }
@@ -64,30 +63,30 @@ export default function ViewTemplates({ templates, setTemplates }) {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-  
+
     const templateToSave = {
       ...selectedTemplate,
-      fields: selectedTemplate.fields.join(", ")
+      fields: selectedTemplate.fields.join(","),
     };
-  
+
     if (templateToSave && templateToSave.templateID) {
       // Perform API call to update the template
       try {
         const response = await fetch(
-          `https://gettemplates1.azurewebsites.net/api/Templates/${templateToSave.templateID}`,
+          `https://gettemplates1.azurewebsites.net/api/Templates/updateTemplate/${templateToSave.templateID}`,
           {
-            method: "PUT",
+            method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify(templateToSave),
           }
         );
-  
+
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
-  
+
         // Update the template in the templates state
         setTemplates(
           templates.map((template) =>
@@ -112,11 +111,11 @@ export default function ViewTemplates({ templates, setTemplates }) {
             body: JSON.stringify(templateToSave),
           }
         );
-  
+
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
-  
+
         const newTemplate = await response.json();
         // Add the new template to the state
         setTemplates((prevTemplates) => [...prevTemplates, newTemplate]);
@@ -124,12 +123,11 @@ export default function ViewTemplates({ templates, setTemplates }) {
         console.error("Error creating template:", error);
       }
     }
-  
+
     // Close the form and clear the selected template
     setEditFormVisible(false);
     setSelectedTemplate(null);
   };
-  
 
   const handleFieldToggle = (field) => {
     if (!selectedTemplate) {
@@ -147,7 +145,6 @@ export default function ViewTemplates({ templates, setTemplates }) {
       });
     }
   };
-
 
   return (
     <div>
@@ -174,8 +171,8 @@ export default function ViewTemplates({ templates, setTemplates }) {
               {item.templateName}
             </p>
             <p className="text-sm font-medium text-gray-600">
-  Fields: {item.fields}
-</p>
+              Fields: {item.fields}
+            </p>
 
             <div className="mt-2 space-x-2">
               <button
@@ -204,7 +201,9 @@ export default function ViewTemplates({ templates, setTemplates }) {
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="text-2xl mb-4">
-              {selectedTemplate && selectedTemplate.templateID ? "Edit Template" : "Add Template"}
+              {selectedTemplate && selectedTemplate.templateID
+                ? "Edit Template"
+                : "Add Template"}
             </h2>
             <form onSubmit={handleFormSubmit}>
               <label className="block mb-2">
@@ -245,7 +244,7 @@ export default function ViewTemplates({ templates, setTemplates }) {
                 </div>
               </div>
               <div className="mt-2 space-x-2">
-              <button
+                <button
                   className="bg-green-500 text-white px-4 py-2 rounded mr-4 shadow"
                   type="submit"
                 >

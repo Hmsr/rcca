@@ -11,32 +11,66 @@ import {
 } from "@heroicons/react/24/outline";
 
 const RecordWindow = ({ record, onClose, onEdit, onApprove, onDeny }) => {
-  return (
-    <div className="fixed inset-0 z-10 flex items-center justify-center p-4 bg-black bg-opacity-50">
-      <div className="bg-white w-full max-w-md p-8 rounded shadow-lg">
-        <div className="p-5 flex justify-center"></div>
+  const renderFormElements = (obj) => {
+    return (
+      <div className="flex flex-wrap">
+        {Object.entries(obj).map(
+          ([key, value]) =>
+            value && (
+              <div
+                key={key}
+                className="border border-gray-200 bg-blue-50 p-2 rounded mr-4 mb-2 shadow-md"
+              >
+                <p className="text-xs font-bold text-gray-700 capitalize">
+                  {key}:
+                </p>
+                <p className="text-sm font-semibold text-gray-900">{value}</p>
+              </div>
+            )
+        )}
+      </div>
+    );
+  };
 
+  return (
+    <div className="fixed inset-0 z-10 flex items-center justify-center p-4 bg-black bg-opacity-50 overflow-auto">
+      <div className="bg-white w-full max-w-xl p-4 rounded shadow-lg overflow-auto">
+        <div className="p-5 flex justify-center"></div>
+        {/* 
         <div className="mb-4">
-          <p className="text-sm font-bold text-gray-700">Document ID:</p>
-          <p className="text-lg font-semibold text-gray-900">
+          <p className="text-sm font-bold text-gray-700">Form Elements:</p>
+          <pre className="text-lg font-semibold text-gray-900 whitespace-pre-wrap">
+            {JSON.stringify(record.formElements, null, 2)}
+          </pre>
+        </div> */}
+
+        <div className="mb-2">
+          <p className="text-sm font-bold text-gray-700 ">Elements:</p>
+          <div className="pl-2 p-2 bg-gray-50 flex flex-wrap justify-between">
+            {renderFormElements(record.formElements)}
+          </div>
+        </div>
+
+        <div className="mb-2 bg-gray-50">
+          <p className="text-xs font-bold text-gray-700">Document ID:</p>
+          <p className="text-sm font-semibold text-gray-900">
             {record.documentID}
           </p>
         </div>
-        <div className="mb-4">
-          <p className="text-sm font-bold text-gray-700">Template ID:</p>
-          <p className="text-lg font-semibold text-gray-900">
+        <div className="mb-2 bg-gray-50">
+          <p className="text-xs font-bold text-gray-700">Template ID:</p>
+          <p className="text-sm font-semibold text-gray-900">
             {record.templateID}
           </p>
         </div>
-        <div className="mb-4">
-          <p className="text-sm font-bold text-gray-700">
-            Waiting Admin Approval:
-          </p>
-          <p className="text-lg font-semibold text-gray-900">
-            {record.waitingAdminApproval.toString()}
+        <div className="mb-2 bg-gray-50">
+          <p className="text-sm font-bold text-green-500">
+            Waiting Admin Approval:{" "}
+            <strong>{record.waitingAdminApproval.toString()}</strong>
           </p>
         </div>
-        <div className="mb-4">
+
+        <div className="mb-2 bg-gray-50">
           <p className="text-sm font-bold text-gray-700">Document Reference:</p>
           {/* <a
             href={record.documentReference}

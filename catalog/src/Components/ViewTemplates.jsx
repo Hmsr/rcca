@@ -172,7 +172,10 @@ export default function ViewTemplates({ templates, setTemplates }) {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {templates.map((item) => (
-          <div key={item.templateID} className="bg-white shadow-md rounded p-4">
+          <div
+            key={item.templateID}
+            className="bg-gray-50 shadow-md rounded p-4"
+          >
             <p className="text-sm font-bold text-gray-700">
               ID: {item.templateID}
             </p>
@@ -215,13 +218,13 @@ export default function ViewTemplates({ templates, setTemplates }) {
             className="bg-white w-full max-w-md p-8 rounded shadow-lg"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-2xl mb-4">
+            <h2 className="text-2xl mb-4 bg-gray-50">
               {selectedTemplate && selectedTemplate.templateID
                 ? "Edit Template"
                 : "Add Template"}
             </h2>
             <form onSubmit={handleFormSubmit}>
-              <label className="block mb-2">
+              <label className="block mb-2 ">
                 Template Name:
                 <input
                   className="block w-full mt-1 p-2 border border-gray-300 rounded"
@@ -236,7 +239,7 @@ export default function ViewTemplates({ templates, setTemplates }) {
                   required
                 />
               </label>
-              <div className="block mb-4">
+              <div className="block mb-4 bg-gray-50">
                 <span className="text-sm font-semibold">Fields:</span>
                 <div className="mt-2">
                   {possibleFields.map((field) => (

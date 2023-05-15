@@ -35,7 +35,7 @@ const RecordWindow = ({ record, onClose, onEdit, onApprove, onDeny }) => {
   return (
     <div className="fixed inset-0 z-10 flex items-center justify-center p-4 bg-black bg-opacity-50 overflow-auto">
       <div className="bg-white w-full max-w-xl p-4 rounded shadow-lg overflow-auto">
-        <div className="p-5 flex justify-center"></div>
+        <div className=" p-5 flex justify-center"></div>
         {/* 
         <div className="mb-4">
           <p className="text-sm font-bold text-gray-700">Form Elements:</p>
@@ -44,7 +44,7 @@ const RecordWindow = ({ record, onClose, onEdit, onApprove, onDeny }) => {
           </pre>
         </div> */}
 
-        <div className="mb-2">
+        <div className="mb-2 ">
           <p className="text-sm font-bold text-gray-700 ">Elements:</p>
           <div className="pl-2 p-2 bg-gray-50 flex flex-wrap justify-between">
             {renderFormElements(record.formElements)}
@@ -181,13 +181,15 @@ const ViewRecords = () => {
 
   return (
     <div>
-      <div className="p-5 flex items-center justify-center"></div>
-
+      <div className=" flex items-center justify-center"></div>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl">Records For Approval</h1>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {records.map((record) => (
           <div
             key={record.documentID}
-            className="bg-white shadow-md rounded p-4"
+            className="bg-gray-50 shadow-md rounded p-4"
           >
             {/* <DocumentTextIcon className="h-5 w-5" aria-hidden="true" /> */}
             <p className="text-sm font-bold text-gray-700">

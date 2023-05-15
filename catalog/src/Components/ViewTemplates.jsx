@@ -180,7 +180,13 @@ export default function ViewTemplates({ templates, setTemplates }) {
               {item.templateName}
             </p>
             <p className="text-sm font-medium text-gray-600">
-              Fields: {item.fields}
+              <strong>Fields:</strong>{" "}
+              {item.fields.split(",").map((field, index) => (
+                <span key={index}>
+                  {field}
+                  {index < item.fields.split(",").length - 1 && ", "}
+                </span>
+              ))}
             </p>
 
             <div className="mt-2 space-x-2">

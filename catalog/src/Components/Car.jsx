@@ -6,7 +6,6 @@ import { STLLoader } from "three/examples/jsm/loaders/STLLoader";
 import car from "../Components/car.stl";
 
 function CarCar() {
-  const texture = useLoader(TextureLoader, "path/to/your/texture.jpg");
   const [position, setPosition] = useState([0, 0, 0]);
   const [rotation, setRotation] = useState([0, 0, 0]);
   const [color, setColor] = useState([0.25, 0.25, 0.25]);
@@ -33,7 +32,7 @@ function CarCar() {
   return (
     <mesh scale={[0.02, 0.02, 0.02]} position={position} rotation={rotation}>
       <bufferGeometry attach="geometry" {...geometry} />
-      <meshStandardMaterial color={color} map={texture} />
+      <meshStandardMaterial color={color} />
     </mesh>
   );
 }

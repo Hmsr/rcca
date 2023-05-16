@@ -42,9 +42,16 @@ function Upload() {
       ...formValues,
       [event.target.name]: event.target.value,
     });
+    console.log(formValues);
   };
 
+  function test(e) {
+    // e.preventDefault();
+    console.log("test function called");
+  }
+
   const handleSubmit = async (event) => {
+    console.log("handleSubmit function called");
     event.preventDefault();
     try {
       const response = await fetch(
@@ -85,7 +92,8 @@ function Upload() {
       {selectedTemplate && (
         <div className="fixed top-0 left-0 w-screen h-screen bg-gray-500 bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-5 rounded-lg">
-            <form onSubmit={handleSubmit}>
+            {/* <form onSubmit={handleSubmit}> */}
+            <form onSubmit={test}>
               <h2>{selectedTemplate.templateName}</h2>
               {selectedTemplate.fields.split(",").map((field) => (
                 <div key={field.trim()}>
@@ -98,8 +106,24 @@ function Upload() {
                   />
                 </div>
               ))}
-              <button type="submit">Submit</button>
-              <button type="button" onClick={() => setSelectedTemplate(null)}>
+              <button
+                type="submit"
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   console.log("Submit button clicked");
+                // }}
+              >
+                Submit
+              </button>
+
+              <button
+                type="button"
+                onClick={(e) => {
+                  console.log("Cancel button clicked");
+                  e.stopPropagation();
+                  setSelectedTemplate(null);
+                }}
+              >
                 Cancel
               </button>
             </form>

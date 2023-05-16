@@ -45,6 +45,7 @@ export default function FilterBar({ onYearRangeSelect, onFilterSelect }) {
   };
 
   function handleUploadButtonClick() {
+    console.log("uploadbuttonclick");
     setShowUploadPopup(true);
   }
   function handleClosePopup() {
@@ -183,7 +184,6 @@ export default function FilterBar({ onYearRangeSelect, onFilterSelect }) {
                 Upload a record
               </button>
               {showUploadPopup && <UploadPopup onClose={handleClosePopup} />}
-
               {filters.map((section) => (
                 <Disclosure
                   as="div"

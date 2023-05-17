@@ -193,10 +193,7 @@ const ViewRecords = () => {
           >
             {/* <DocumentTextIcon className="h-5 w-5" aria-hidden="true" /> */}
             <p className="text-sm font-bold text-gray-700">
-              Document ID: {record.documentID}
-            </p>
-            <p className="text-sm font-bold text-gray-700">
-              Template ID: {record.templateID}
+              Title: {record.formElements.title}
             </p>
             <p className="text-sm font-medium text-gray-600">
               Waiting Admin Approval: {record.waitingAdminApproval.toString()}

@@ -47,7 +47,7 @@ export default function RecordsList({ searchValue, onFilterSelect }) {
       try {
         setLoading(true);
         const response = await fetch(
-          "https://getdocument.azurewebsites.net/api/Documents/"
+          "https://getdocument.azurewebsites.net/api/Documents/listOfDocumentsApproved"
         );
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);

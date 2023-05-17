@@ -120,8 +120,7 @@ function SecondPopup({ onClose, template }) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
-      console.log("Your document has been uploaded successfully: ", data);
+      console.log("Data uploaded")
       setIsSubmitted(true);
     } catch (error) {
       console.error("Error occurred while uploading the document: ", error);
@@ -189,11 +188,11 @@ function SecondPopup({ onClose, template }) {
           <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-50 bg-gray-800 bg-opacity-50">
             <div className="bg-white rounded-lg p-8">
               <p className="text-xl font-bold mb-4">
-                Submit successfully uploaded
+                Document submited for approval
               </p>
               <button
                 className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-                onClick={() => setIsSubmitted(false)}
+                onClick={onClose}
               >
                 Close
               </button>

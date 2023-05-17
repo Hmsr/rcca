@@ -131,21 +131,23 @@ export default function RecordsList({ searchValue, onFilterSelect }) {
         showModal={showRecord}
         onClose={handleRecordClose}
       >
-        <h3 className="text-xl font-semibold">ROVER 75 CDTI DIESEL</h3>
         <div className="fixed inset-0 z-10 flex items-center justify-center p-4 bg-black bg-opacity-50">
           <div className="bg-white w-full max-w-md p-8 rounded shadow-lg">
+            <h3 className="text-xl font-semibold">
+              {selectedDocument?.formElements.title}
+            </h3>
             <div className="p-5 flex justify-center"></div>
 
             <div className="mb-4">
               <p className="text-sm font-bold text-gray-700">Document ID:</p>
               <p className="text-lg font-semibold text-gray-900">
-                {selectedDocument.documentID}
+                {selectedDocument?.documentID}
               </p>
             </div>
             <div className="mb-4">
               <p className="text-sm font-bold text-gray-700">Template ID:</p>
               <p className="text-lg font-semibold text-gray-900">
-                {selectedDocument.templateID}
+                {selectedDocument?.templateID}
               </p>
             </div>
             <div className="mb-4">
@@ -153,12 +155,12 @@ export default function RecordsList({ searchValue, onFilterSelect }) {
                 Document Reference:
               </p>
               <p className="text-lg font-semibold text-gray-900">
-                {selectedDocument.documentReference}
+                {selectedDocument?.documentReference}
               </p>
             </div>
             <div className="mt-2 space-x-2">
               <a
-                href={selectedDocument.documentReference}
+                href={selectedDocument?.documentReference}
                 download
                 className="inline-block bg-blue-500 text-white px-4 py-2 rounded shadow"
               >

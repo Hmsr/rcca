@@ -34,10 +34,6 @@ function UploadPopup({ onClose }) {
   function handleSecondPopupClose() {
     setShowSecondPopup(false);
   }
-  // Function to handle form submission in SecondPopup
-  function handleSecondPopupSubmit() {
-    setShowSecondPopup(false);
-  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-50">
@@ -59,8 +55,6 @@ function UploadPopup({ onClose }) {
                 {showSecondPopup === template.templateID && (
                   <SecondPopup
                     onClose={handleSecondPopupClose}
-                    onFirstClose={onClose}
-                    onSubmit={handleSecondPopupSubmit}
                     template={template}
                   />
                 )}
@@ -79,7 +73,7 @@ function UploadPopup({ onClose }) {
   );
 }
 
-function SecondPopup({ onClose, onSubmit, template, onFirstClose }) {
+function SecondPopup({ onClose, template }) {
   const [formValues, setFormValues] = useState({});
   const [file, setFile] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -102,7 +96,7 @@ function SecondPopup({ onClose, onSubmit, template, onFirstClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log("submit clicked");
     try {
       const formData = new FormData();
       formData.append("templateID", template.templateID);
@@ -129,8 +123,6 @@ function SecondPopup({ onClose, onSubmit, template, onFirstClose }) {
       const data = await response.json();
       console.log("Your document has been uploaded successfully: ", data);
       setIsSubmitted(true);
-      onClose(); // This should close the SecondPopup
-      onSubmit();
     } catch (error) {
       console.error("Error occurred while uploading the document: ", error);
     }
@@ -179,23 +171,13 @@ function SecondPopup({ onClose, onSubmit, template, onFirstClose }) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="flex justify-between mt-2 space-x-2">
               <button
-                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-                onClick={() => {
-                  setIsSubmitted(false);
-                  onClose(); // Add this line
-                  onFirstClose();
-                }}
+                className="flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={onClose}
               >
                 Close
               </button>
               <button
                 type="submit"
-                onClick={() => {
-                  // setIsSubmitted(false);
-                  onClose(); // Add this line
-
-                  onFirstClose();
-                }}
                 className="bg-green-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
               >
                 Submit

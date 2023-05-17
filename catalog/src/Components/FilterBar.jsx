@@ -1,12 +1,19 @@
 import { Fragment, useState } from "react";
-import { Dialog, Disclosure, Transition } from "@headlessui/react";
+import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { MinusIcon, PlusIcon } from "@heroicons/react/20/solid";
+import {
+  ChevronDownIcon,
+  FunnelIcon,
+  MinusIcon,
+  PlusIcon,
+  Squares2X2Icon,
+} from "@heroicons/react/20/solid";
 import React from "react";
 import UploadPopup from "./UploadPopup";
+import Upload from "./Upload";
 const filters = [
   {
-    id: "language",
+    id: "color",
     name: "Language",
     options: [
       { value: "english", label: "English", checked: false },
@@ -14,7 +21,7 @@ const filters = [
     ],
   },
   {
-    id: "format",
+    id: "category",
     name: "Format",
     options: [
       { value: "pdf", label: "PDF", checked: false },
@@ -29,19 +36,15 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function FilterBar({ onYearRangeSelect, onFilterSelect }) {
+export default function FilterBar({ onSearch, onYearRangeSelect }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [showUploadPopup, setShowUploadPopup] = useState(false);
+
   const [startYear, setStartYear] = useState(1986);
-  const [selectedLanguages, setSelectedLanguages] = useState(1986);
-  const [selectedFormats, setSelectedFormats] = useState(1986);
   const [endYear, setEndYear] = useState(2023);
+
   const handleYearRangeSelect = () => {
     onYearRangeSelect(startYear, endYear);
-  };
-
-  const handleApplyFilters = () => {
-    onFilterSelect(startYear, endYear);
   };
 
   function handleUploadButtonClick() {
@@ -97,69 +100,6 @@ export default function FilterBar({ onYearRangeSelect, onFilterSelect }) {
                       <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                     </button>
                   </div>
-
-                  {/* Filters */}
-                  <form className="mt-4 border-t border-gray-200">
-                    <h3 className="sr-only">Categories</h3>
-
-                    {filters.map((section) => (
-                      <Disclosure
-                        as="div"
-                        key={section.id}
-                        className="border-t border-gray-200 px-4 py-6"
-                      >
-                        {({ open }) => (
-                          <>
-                            <h3 className="-mx-2 -my-3 flow-root">
-                              <Disclosure.Button className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
-                                <span className="font-medium text-gray-900">
-                                  {section.name}
-                                </span>
-                                <span className="ml-6 flex items-center">
-                                  {open ? (
-                                    <MinusIcon
-                                      className="h-5 w-5"
-                                      aria-hidden="true"
-                                    />
-                                  ) : (
-                                    <PlusIcon
-                                      className="h-5 w-5"
-                                      aria-hidden="true"
-                                    />
-                                  )}
-                                </span>
-                              </Disclosure.Button>
-                            </h3>
-                            <Disclosure.Panel className="pt-6">
-                              <div className="space-y-6">
-                                {section.options.map((option, optionIdx) => (
-                                  <div
-                                    key={option.value}
-                                    className="flex items-center"
-                                  >
-                                    <input
-                                      id={`filter-mobile-${section.id}-${optionIdx}`}
-                                      name={`${section.id}[]`}
-                                      defaultValue={option.value}
-                                      type="checkbox"
-                                      defaultChecked={option.checked}
-                                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                    />
-                                    <label
-                                      htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
-                                      className="ml-3 min-w-0 flex-1 text-gray-500"
-                                    >
-                                      {option.label}
-                                    </label>
-                                  </div>
-                                ))}
-                              </div>
-                            </Disclosure.Panel>
-                          </>
-                        )}
-                      </Disclosure>
-                    ))}
-                  </form>
                 </Dialog.Panel>
               </Transition.Child>
             </div>
@@ -174,82 +114,29 @@ export default function FilterBar({ onYearRangeSelect, onFilterSelect }) {
               </h2>
             }
             {/* Filters */}
-            <form className="hidden lg:block">
-              <h3 className="sr-only">Categories</h3>
-              <button
-                type="button"
-                className="block px-2 py-3"
-                onClick={handleUploadButtonClick}
-              >
-                Upload a record
-              </button>
-              {showUploadPopup && <UploadPopup onClose={handleClosePopup} />}
-              {filters.map((section) => (
-                <Disclosure
-                  as="div"
-                  key={section.id}
-                  className="border-b border-gray-200 py-6"
-                >
-                  {({ open }) => (
-                    <>
-                      <h3 className="-my-3 flow-root">
-                        <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
-                          <span className="font-medium text-gray-900">
-                            {section.name}
-                          </span>
-                          <span className="ml-6 flex items-center">
-                            {open ? (
-                              <MinusIcon
-                                className="h-5 w-5"
-                                aria-hidden="true"
-                              />
-                            ) : (
-                              <PlusIcon
-                                className="h-5 w-5"
-                                aria-hidden="true"
-                              />
-                            )}
-                          </span>
-                        </Disclosure.Button>
-                      </h3>
-                      <Disclosure.Panel className="pt-6">
-                        <div className="space-y-4">
-                          {section.options.map((option, optionIdx) => (
-                            <div
-                              key={option.value}
-                              className="flex items-center"
-                            >
-                              <input
-                                id={`filter-${section.id}-${optionIdx}`}
-                                name={`${section.id}[]`}
-                                defaultValue={option.value}
-                                type="checkbox"
-                                defaultChecked={option.checked}
-                                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                              />
-                              <label
-                                htmlFor={`filter-${section.id}-${optionIdx}`}
-                                className="ml-3 text-sm text-gray-600"
-                              >
-                                {option.label}
-                              </label>
-                            </div>
-                          ))}
-                        </div>
-                      </Disclosure.Panel>
-                    </>
-                  )}
-                </Disclosure>
-              ))}
+            <h3 className="sr-only">Categories</h3>
+            <button
+              type="button"
+              className="block px-2 py-3"
+              onClick={handleUploadButtonClick}
+            >
+              Upload a record
+            </button>
+            {showUploadPopup && <UploadPopup onClose={handleClosePopup} />}
+            {/* {showUploadPopup && <Upload onClose={handleClosePopup} />} */}
+            {filters.map((section) => (
               <Disclosure
                 as="div"
-                /* key={section.id} */ className="border-b border-gray-200 py-6"
+                key={section.id}
+                className="border-b border-gray-200 py-6"
               >
                 {({ open }) => (
                   <>
                     <h3 className="-my-3 flow-root">
                       <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
-                        <span className="font-medium text-gray-900">Year</span>
+                        <span className="font-medium text-gray-900">
+                          {section.name}
+                        </span>
                         <span className="ml-6 flex items-center">
                           {open ? (
                             <MinusIcon className="h-5 w-5" aria-hidden="true" />
@@ -261,43 +148,86 @@ export default function FilterBar({ onYearRangeSelect, onFilterSelect }) {
                     </h3>
                     <Disclosure.Panel className="pt-6">
                       <div className="space-y-4">
-                        <div className="flex items-center">
-                          <div className="flex justify-center space-x-2">
+                        {section.options.map((option, optionIdx) => (
+                          <div key={option.value} className="flex items-center">
                             <input
-                              className="border border-gray-400 "
-                              type="number"
-                              value={startYear}
-                              min={1986}
-                              max={2023}
-                              onChange={(e) =>
-                                setStartYear(parseInt(e.target.value))
-                              }
+                              id={`filter-${section.id}-${optionIdx}`}
+                              name={`${section.id}[]`}
+                              defaultValue={option.value}
+                              type="checkbox"
+                              defaultChecked={option.checked}
+                              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                             />
-                            <span>--</span>
-                            <input
-                              className="border border-gray-400 "
-                              type="number"
-                              value={endYear}
-                              min={1986}
-                              max={2023}
-                              onChange={(e) =>
-                                setEndYear(parseInt(e.target.value))
-                              }
-                            />
-                            <button
-                              className="bg-blue-500 text-white px-1 py-1 rounded"
-                              onClick={handleYearRangeSelect}
+                            <label
+                              htmlFor={`filter-${section.id}-${optionIdx}`}
+                              className="ml-3 text-sm text-gray-600"
                             >
-                              Apply
-                            </button>
+                              {option.label}
+                            </label>
                           </div>
-                        </div>
+                        ))}
                       </div>
                     </Disclosure.Panel>
                   </>
                 )}
               </Disclosure>
-            </form>
+            ))}
+            <Disclosure
+              as="div"
+              /* key={section.id} */ className="border-b border-gray-200 py-6"
+            >
+              {({ open }) => (
+                <>
+                  <h3 className="-my-3 flow-root">
+                    <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
+                      <span className="font-medium text-gray-900">Year</span>
+                      <span className="ml-6 flex items-center">
+                        {open ? (
+                          <MinusIcon className="h-5 w-5" aria-hidden="true" />
+                        ) : (
+                          <PlusIcon className="h-5 w-5" aria-hidden="true" />
+                        )}
+                      </span>
+                    </Disclosure.Button>
+                  </h3>
+                  <Disclosure.Panel className="pt-6">
+                    <div className="space-y-4">
+                      <div className="flex items-center">
+                        <div className="flex justify-center space-x-2">
+                          <input
+                            className="border border-gray-400 "
+                            type="number"
+                            value={startYear}
+                            min={1986}
+                            max={2023}
+                            onChange={(e) =>
+                              setStartYear(parseInt(e.target.value))
+                            }
+                          />
+                          <span>--</span>
+                          <input
+                            className="border border-gray-400 "
+                            type="number"
+                            value={endYear}
+                            min={1986}
+                            max={2023}
+                            onChange={(e) =>
+                              setEndYear(parseInt(e.target.value))
+                            }
+                          />
+                          <button
+                            className="bg-blue-500 text-white px-1 py-1 rounded"
+                            onClick={handleYearRangeSelect}
+                          >
+                            Apply
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
           </section>
         </main>
       </div>

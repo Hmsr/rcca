@@ -110,13 +110,12 @@ export default function FilterBar({ onSearch, onYearRangeSelect }) {
           <section aria-labelledby="products-heading" className="pb-24 pt-6">
             <button
               type="button"
-              className="block px-2 py-3"
+              className="inline-flex items-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               onClick={handleUploadButtonClick}
             >
               Upload a record
             </button>
             {showUploadPopup && <UploadPopup onClose={handleClosePopup} />}
-            {/* {showUploadPopup && <Upload onClose={handleClosePopup} />} */}
           </section>
         </main>
       </div>

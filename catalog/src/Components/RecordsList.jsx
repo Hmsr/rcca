@@ -116,10 +116,10 @@ export default function RecordsList({ searchValue, onFilterSelect }) {
               />
               <div className="min-w-0 flex-auto">
                 <p className="text-sm font-semibold leading-6 text-gray-900">
-                  {record.documentID}
+                  {record.formElements.title}
                 </p>
                 <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                  {record.templateID}
+                  {record.formElements.description}
                 </p>
               </div>
             </div>
@@ -133,10 +133,10 @@ export default function RecordsList({ searchValue, onFilterSelect }) {
       >
         <div className="fixed inset-0 z-10 flex items-center justify-center p-4 bg-black bg-opacity-50">
           <div className="bg-white w-full max-w-md p-8 rounded shadow-lg">
-            <h3 className="text-xl font-semibold">
+            <h2 className="text-xl font-semibold">
               {selectedDocument?.formElements.title}
-            </h3>
-            <div className="p-5 flex justify-center"></div>
+            </h2>
+            {/* <div className="p-5 flex justify-center"></div>
 
             <div className="mb-4">
               <p className="text-sm font-bold text-gray-700">Document ID:</p>
@@ -157,7 +157,22 @@ export default function RecordsList({ searchValue, onFilterSelect }) {
               <p className="text-lg font-semibold text-gray-900">
                 {selectedDocument?.documentReference}
               </p>
-            </div>
+            </div> */}
+            {Object.entries(selectedDocument?.formElements || {}).map(
+              ([key, value]) => {
+                if (key !== "title" && value !== null) {
+                  return (
+                    <div className="mb-4" key={key}>
+                      <p className="text-sm font-bold text-gray-700">{key}:</p>
+                      <p className="text-lg font-semibold text-gray-900">
+                        {value}
+                      </p>
+                    </div>
+                  );
+                }
+                return null;
+              }
+            )}
             <div className="mt-2 space-x-2">
               <a
                 href={selectedDocument?.documentReference}

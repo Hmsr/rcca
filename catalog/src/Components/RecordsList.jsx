@@ -111,7 +111,7 @@ export default function RecordsList({ searchValue, onFilterSelect }) {
             <div className="flex gap-x-4">
               <img
                 className="h-12 w-12 flex-none rounded-full bg-gray-50"
-                src="https://www.svgrepo.com/show/56192/pdf.svg"
+                src="https://www.svgrepo.com/show/508037/document-zip.svg"
                 alt=""
               />
               <div className="min-w-0 flex-auto">
